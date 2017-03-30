@@ -1,0 +1,26 @@
+{
+  "name": "snub-http",
+  "version": "1.0.0",
+  "description": "HTTP server middleware for snub",
+  "main": "snub-http.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cokeeffekt/snub-http.git"
+  },
+  "keywords": [
+    "redis",
+    "http"
+  ],
+  "author": "Patrik Hartwig",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cokeeffekt/snub-http/issues"
+  },
+  "homepage": "https://github.com/cokeeffekt/snub-http#readme",
+  "devDependencies": {
+    "snub": "^1.0.2"
+  }
+}
