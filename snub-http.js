@@ -53,6 +53,7 @@ module.exports = function (config) {
             response.statusCode = reply.statusCode || 200;
             if (typeof reply.body == 'string')
               return response.end(reply.body);
+            response.setHeader('Content-Type', 'application/json');
             response.end(JSON.stringify(reply.body));
           })
           .send(delivered => {
