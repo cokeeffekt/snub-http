@@ -6,7 +6,11 @@ module.exports = function (config) {
   config = Object.assign({
     port: 8484,
     debug: false,
-    timeout: 5000
+    timeout: 5000,
+    headers: {
+      'X-powered-by': 'Snub-HTTP',
+      'Access-Control-Allow-Origin': '*'
+    }
   }, config || {});
 
   return function (snub) {
@@ -29,10 +33,10 @@ module.exports = function (config) {
         snub
           .mono('http:' + reqObj.method + ':' + reqObj.path, reqObj)
           .replyAt(reply => {
-            if (reply.headers)
-              Object.keys(reply.headers).forEach(i => {
-                response.setHeader(i, reply.headers[i]);
-              });
+            reply.headers = Object.assign({}, config.headers, reply.headers);
+            Object.keys(reply.headers).forEach(i => {
+              response.setHeader(i, reply.headers[i]);
+            });
             response.statusCode = reply.statusCode || 200;
             if (typeof reply.body == 'string')
               return response.end(reply.body);
