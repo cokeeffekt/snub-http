@@ -56,7 +56,7 @@ module.exports = function (config) {
             response.end(JSON.stringify(reply.body));
           })
           .send(delivered => {
-            if (delivered) return;
+            if (delivered > 0) return;
             response.statusCode = 404;
             response.setHeader('Content-Type', 'application/json');
             response.end(JSON.stringify({
