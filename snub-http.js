@@ -29,7 +29,7 @@ module.exports = function (config) {
 
       var urlParsed = url.parse(request.url);
 
-      request.headers['x-forwarded-for'] = req.headers['x-forwarded-for'] || request.connection.remoteAddress;
+      request.headers['x-forwarded-for'] = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
 
       var reqObj = {
         method: request.method,
