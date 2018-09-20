@@ -3,27 +3,35 @@ const querystring = require('querystring');
 const url = require('url');
 
 module.exports = function (config) {
+
+  var headers = {
+    'X-powered-by': 'Snub-HTTP',
+    'Access-Control-Allow-Origin': '*'
+  };
+  var optionHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Credentials': false,
+    'Access-Control-Max-Age': '86400', // 24 hours
+    'Access-Control-Allow-Headers': 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
+  };
+
   config = Object.assign({
     port: 8484,
     debug: false,
     timeout: 5000,
-    headers: {
-      'X-powered-by': 'Snub-HTTP',
-      'Access-Control-Allow-Origin': '*'
-    }
+    headers: {},
+    optionHeaders: {}
   }, config || {});
+
+  config.headers = Object.assign({}, headers, config.headers);
+  config.optionHeaders = Object.assign({}, optionHeaders, config.optionHeaders);
 
   return function (snub) {
     const requestHandler = (request, response) => {
 
       if (request.method === 'OPTIONS') {
-        var headers = {};
-        headers["Access-Control-Allow-Origin"] = "*";
-        headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
-        headers["Access-Control-Allow-Credentials"] = false;
-        headers["Access-Control-Max-Age"] = '86400'; // 24 hours
-        headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
-        response.writeHead(200, headers);
+        response.writeHead(200, config.optionHeaders);
         return response.end();
       }
 
