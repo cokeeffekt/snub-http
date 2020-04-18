@@ -65,12 +65,12 @@ module.exports = function (config) {
               response.setHeader('Content-Type', 'application/json');
               response.end(JSON.stringify(reply.body));
             } catch (error) {
-              response.statusCode = 500;
-              response.setHeader('Content-Type', 'application/json');
-              response.end(JSON.stringify({
-                message: 'Server Error'
-              }));
               console.error(error, reqObj, reply);
+              // response.statusCode = 500;
+              // response.setHeader('Content-Type', 'application/json');
+              // response.end(JSON.stringify({
+              //   message: 'Server Error'
+              // }));
             }
           })
           .send(delivered => {
