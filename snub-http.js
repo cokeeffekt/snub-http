@@ -1,9 +1,8 @@
 const http = require('http');
 const querystring = require('querystring');
-const url = require('url');
+// const url = require('url');
 
 module.exports = function (config) {
-
   var headers = {
     'X-powered-by': 'Snub-HTTP',
     'Access-Control-Allow-Origin': '*'
@@ -29,13 +28,12 @@ module.exports = function (config) {
 
   return function (snub) {
     const requestHandler = (request, response) => {
-
       if (request.method === 'OPTIONS') {
         response.writeHead(200, config.optionHeaders);
         return response.end();
       }
 
-      var urlParsed = url.parse(request.url);
+      var urlParsed = new URL('http://null' + request.url);
 
       request.headers['x-forwarded-for'] = request.headers['x-real-ip'] || request.headers['x-forwarded-for'] || request.connection.remoteAddress;
 
@@ -56,15 +54,24 @@ module.exports = function (config) {
         snub
           .mono('http:' + reqObj.method + ':' + reqObj.path, reqObj)
           .replyAt(reply => {
-            reply.headers = Object.assign({}, config.headers, reply.headers);
-            Object.keys(reply.headers).forEach(i => {
-              response.setHeader(i, reply.headers[i]);
-            });
-            response.statusCode = reply.statusCode || 200;
-            if (typeof reply.body == 'string')
-              return response.end(reply.body);
-            response.setHeader('Content-Type', 'application/json');
-            response.end(JSON.stringify(reply.body));
+            try {
+              reply.headers = Object.assign({}, config.headers, reply.headers);
+              Object.keys(reply.headers).forEach(i => {
+                response.setHeader(i, reply.headers[i]);
+              });
+              response.statusCode = reply.statusCode || 200;
+              if (typeof reply.body === 'string')
+                return response.end(reply.body);
+              response.setHeader('Content-Type', 'application/json');
+              response.end(JSON.stringify(reply.body));
+            } catch (error) {
+              response.statusCode = 500;
+              response.setHeader('Content-Type', 'application/json');
+              response.end(JSON.stringify({
+                message: 'Server Error'
+              }));
+              console.error(error, reqObj, reply);
+            }
           })
           .send(delivered => {
             if (delivered > 0) return;
@@ -90,9 +97,8 @@ module.exports = function (config) {
     const server = http.createServer(requestHandler);
 
     server.listen(config.port, (err) => {
-      if (err) {
-        return console.log('something bad happened', err);
-      }
+      if (err)
+        return console.error('something bad happened', err);
       if (config.debug)
         console.log(`Snub HTTP Listening on ${config.port}`);
     });

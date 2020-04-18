@@ -1,6 +1,6 @@
 {
   "name": "snub-http",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "HTTP server middleware for snub",
   "main": "snub-http.js",
   "scripts": {
@@ -21,6 +21,12 @@
   },
   "homepage": "https://github.com/cokeeffekt/snub-http#readme",
   "devDependencies": {
-    "snub": "^1.0.2"
+    "snub": "^1.0.2",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
   }
 }
