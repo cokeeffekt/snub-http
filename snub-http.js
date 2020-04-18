@@ -53,7 +53,16 @@ module.exports = function (config) {
 
         snub
           .mono('http:' + reqObj.method + ':' + reqObj.path, reqObj)
-          .replyAt(reply => {
+          .replyAt((reply, error) => {
+            if (!reply && error) {
+              console.error('Snub HTTP => ', error);
+              response.statusCode = 500;
+              response.setHeader('Content-Type', 'application/json');
+              response.end(JSON.stringify({
+                message: 'Server Error'
+              }));
+              return;
+            }
             try {
               reply.headers = Object.assign({}, config.headers, reply.headers);
               Object.keys(reply.headers).forEach(i => {
@@ -66,11 +75,6 @@ module.exports = function (config) {
               response.end(JSON.stringify(reply.body));
             } catch (error) {
               console.error(error, reqObj, reply);
-              // response.statusCode = 500;
-              // response.setHeader('Content-Type', 'application/json');
-              // response.end(JSON.stringify({
-              //   message: 'Server Error'
-              // }));
             }
           })
           .send(delivered => {
@@ -98,7 +102,7 @@ module.exports = function (config) {
 
     server.listen(config.port, (err) => {
       if (err)
-        return console.error('something bad happened', err);
+        return console.error('Snub HTTP => something bad happened', err);
       if (config.debug)
         console.log(`Snub HTTP Listening on ${config.port}`);
     });
