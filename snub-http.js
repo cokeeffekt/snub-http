@@ -51,9 +51,11 @@ module.exports = function (config) {
       }).on('end', function () {
         reqObj.body = Buffer.concat(reqObj.body).toString();
 
+        var uniq = 'http:' + reqObj.method + ':' + reqObj.path + '=>' + Date.now();
         snub
           .mono('http:' + reqObj.method + ':' + reqObj.path, reqObj)
           .replyAt((reply, error) => {
+            console.log('@@ http reply', uniq);
             if (!reply && error) {
               console.error('Snub HTTP => ', error);
               response.statusCode = 500;
