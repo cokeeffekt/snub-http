@@ -46,6 +46,9 @@ module.exports = function (config) {
       if (urlParsed.query)
         reqObj.query = querystring.parse(urlParsed.query);
 
+      if (urlParsed.search)
+        reqObj.query = querystring.parse(urlParsed.search.substring(1));
+
       request.on('data', function (chunk) {
         reqObj.body.push(chunk);
       }).on('end', function () {
