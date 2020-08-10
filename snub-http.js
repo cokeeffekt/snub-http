@@ -20,7 +20,8 @@ module.exports = function (config) {
     debug: false,
     timeout: 5000,
     headers: {},
-    optionHeaders: {}
+    optionHeaders: {},
+    requestMutator: reqObj => { return reqObj; }
   }, config || {});
 
   config.headers = Object.assign({}, headers, config.headers);
@@ -53,6 +54,17 @@ module.exports = function (config) {
         reqObj.body.push(chunk);
       }).on('end', function () {
         reqObj.body = Buffer.concat(reqObj.body).toString();
+
+        reqObj = config.requestMutator(reqObj);
+
+        if (!reqObj) {
+          response.statusCode = 503;
+          response.setHeader('Content-Type', 'application/json');
+          response.end(JSON.stringify({
+            message: 'Event handler unavailable'
+          }));
+          return;
+        }
 
         snub
           .mono('http:' + reqObj.method + ':' + reqObj.path, reqObj)

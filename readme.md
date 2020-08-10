@@ -40,6 +40,10 @@ const snubHttp = new SnubHTTP({
     timeout: 5000 // http timeout (time to wait for reply)
     headers: {
       'Access-Control-Allow-Origin': '*' // global headers to apply to all responses
+    },
+    requestMutator(reqObj) {
+      // must return a request obj, this give you a change to mutate/log incoming requests.
+      return reqObj;
     }
   });
 
