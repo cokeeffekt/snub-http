@@ -55,7 +55,7 @@ module.exports = function (config) {
       }).on('end', async function () {
         reqObj.body = Buffer.concat(reqObj.body).toString();
 
-        reqObj = await Promise.resolve(config.requestMutator(reqObj));
+        reqObj = await config.requestMutator(reqObj);
 
         if (!reqObj) {
           response.statusCode = 503;
