@@ -1,6 +1,6 @@
 {
   "name": "snub-http",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "HTTP server middleware for snub",
   "main": "snub-http.js",
   "scripts": {
