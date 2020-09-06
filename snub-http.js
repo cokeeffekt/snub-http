@@ -52,10 +52,10 @@ module.exports = function (config) {
 
       request.on('data', function (chunk) {
         reqObj.body.push(chunk);
-      }).on('end', function () {
+      }).on('end', async function () {
         reqObj.body = Buffer.concat(reqObj.body).toString();
 
-        reqObj = config.requestMutator(reqObj);
+        reqObj = await config.requestMutator(reqObj);
 
         if (!reqObj) {
           response.statusCode = 503;
