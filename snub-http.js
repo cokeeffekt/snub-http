@@ -70,12 +70,15 @@ module.exports = function (config) {
           .mono('http:' + reqObj.method + ':' + reqObj.path, reqObj)
           .replyAt((reply, error) => {
             if (!reply && error) {
-              console.error('Snub HTTP => ', error);
-              response.statusCode = 500;
-              response.setHeader('Content-Type', 'application/json');
-              response.end(JSON.stringify({
-                message: 'Server Error'
-              }));
+              try {
+                response.statusCode = 500;
+                response.setHeader('Content-Type', 'application/json');
+                response.end(JSON.stringify({
+                  message: 'Server Error'
+                }));
+              } catch (error) {
+                // suppress this as there is a chance the delivered check as already run.
+              }
               return;
             }
             if (!reply)
