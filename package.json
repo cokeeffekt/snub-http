@@ -4,7 +4,8 @@
   "description": "HTTP server middleware for snub",
   "main": "snub-http.js",
   "scripts": {
-    "test": "jest --runInBand --forceExit --silent=false"
+    "test": "jest --runInBand --forceExit --silent=false",
+    "publish": "npm publish --tag beta"
   },
   "repository": {
     "type": "git",
