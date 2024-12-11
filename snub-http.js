@@ -95,6 +95,7 @@ module.exports = function (config) {
               }
               if (!reply) reply = {};
               try {
+                if (response.finished) return; // timeout probably already happened.
                 reply.headers = Object.assign(
                   {},
                   config.headers,
@@ -132,6 +133,7 @@ module.exports = function (config) {
                   message: 'Event handler timed out',
                 })
               );
+              console.warn('Snub-HTTP => Event handler timed out', reqObj);
             }
           }, config.timeout);
         });
