@@ -1,11 +1,11 @@
 {
   "name": "snub-http",
-  "version": "4.0.5-beta.0",
+  "version": "4.1.0",
   "description": "HTTP server middleware for snub",
   "main": "snub-http.js",
   "scripts": {
     "test": "jest --runInBand --forceExit --silent=false",
-    "publish": "npm publish --tag beta"
+    "publish": "npm publish"
   },
   "repository": {
     "type": "git",
