@@ -1,6 +1,6 @@
 {
   "name": "snub-http",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "description": "HTTP server middleware for snub",
   "main": "snub-http.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/cokeeffekt/snub-http#readme",
   "devDependencies": {
     "prettier": "^2.3.1",
-    "snub": "^4.1.0",
+    "snub": "^5.0.0",
     "jest": "^29.7.0"
   }
 }
