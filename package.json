@@ -3,9 +3,11 @@
   "version": "5.1.0",
   "description": "HTTP server middleware for snub",
   "main": "snub-http.js",
+  "files": [
+    "snub-http.js"
+  ],
   "scripts": {
-    "test": "jest --runInBand --forceExit --silent=false",
-    "publish": "npm publish"
+    "test": "jest --runInBand --forceExit --silent=false"
   },
   "repository": {
     "type": "git",
@@ -16,7 +18,7 @@
     "http"
   ],
   "author": "Patrik Hartwig",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/cokeeffekt/snub-http/issues"
   },
