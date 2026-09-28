@@ -41,14 +41,23 @@ const snubHttp = new SnubHTTP({
 
 snub.use(snubHttp);
 
-// setup some endpoints
-snub.on('http:GET:/hello', function (payload, reply) {
-  reply({ body: { message: payload.query || 'Hello, world!' } });
-});
+// setup some endpoints. snub.on() resolves once the psubscribe has landed on
+// the real redis; a request sent before that gets a 404 from snub-http because
+// mono finds no listener yet, so the tests must wait for registration.
+beforeAll(async function () {
+  await snub.on('http:GET:/hello', function (payload, reply) {
+    reply({ body: { message: payload.query || 'Hello, world!' } });
+  });
 
-snub.on('http:POST:/formtest', function (payload, reply) {
-  const body = JSON.parse(payload.body);
-  reply({ body: { message: body } });
+  await snub.on('http:POST:/formtest', function (payload, reply) {
+    const body = JSON.parse(payload.body);
+    reply({ body: { message: body } });
+  });
+}, 10000);
+
+afterAll(async function () {
+  await snubHttp.close();
+  await snub.close();
 });
 
 // tests
